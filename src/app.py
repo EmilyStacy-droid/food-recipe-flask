@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
+from flask import Flask, request, render_template
 
-from flask import Flask, request
+app = Flask(__name__, template_folder='templates')
 
-app = Flask(__name__)
+# @app.route("/")
+# def main():
+#     return render_template('index.html')
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def main():
-    return '''
-     <form action="/echo_user_input" method="POST">
-         <input name="user_input">
-         <input type="submit" value="Submit!">
-     </form>
-     '''
-
-@app.route("/echo_user_input", methods=["POST"])
-def echo_input():
-    input_text = request.form.get("user_input", "")
-    return "You entered: " + input_text
+    if request.method == 'POST':
+        min_calaries = int(request.form.get('min_calories', 0))
+        cuisine = request.form.get('cuisine', '')
+        returned_str = f"You want to have a {cuisine} cusine with min {min_calaries} calaries"
+        return render_template('index.html', data=returned_str)
+    else:
+        return render_template('index.html')
+   
+if __name__ == '__main__':
+    app.run(debug=True)
