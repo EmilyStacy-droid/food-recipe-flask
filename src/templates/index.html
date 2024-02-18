@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Recipe Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Food Recipe Search</h1>
+    </div>
+
+    <div class="container">
+        <form method="post">
+            <label for="min_calories">Minimum Calories:</label>
+            <input type="number" id="min_calories" name="min_calories" value="0">
+            <br>
+            <label for="cuisine">Cuisine:</label>
+            <select id="cuisine" name="cuisine">
+                <option value="">Any</option>
+                <option value="Italian">Italian</option>
+                <option value="Thai">Thai</option>
+                <!-- Add more cuisine options here... -->
+            </select>
+            <br>
+            <input type="submit" value="Search">
+        </form>
+    </div>
+
+    <div class="container">
+        {% if data %}
+
+        <p>{{ data }}</p>
+
+        {% endif %}
+    </div>
+
+</body>
+
+
+<!-- <h2>Filtered Recipes:</h2>
+    <ul>
+        {% for recipe in recipes %}
+        <li>{{ recipe.name }} ({{ recipe.calories }} calories, {{ recipe.cuisine }})</li>
+        {% endfor %}
+    </ul> -->
+
+
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+/* static/style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    /* Ensure full viewport height */
+    background-color: #f5f5f5;
+    /* Light gray background */
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header {
+    background-color: #0074D9;
+    color: #FFF;
+    text-align: center;
+    padding: 20px;
+    line-height: 2;
+}
+
+form {
+    max-width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    line-height: 3;
+    justify-items: center;
+    /* Slightly reduced line height */
+    font-family: Arial, sans-serif;
+    background-color: #FFF;
+    /* White background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Add more styling as needed (e.g., input fields, buttons) */
+}
