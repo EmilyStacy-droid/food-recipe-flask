@@ -14,7 +14,7 @@
     </div>
 
     <div class="container">
-        <form action="/echo_user_input" method="POST" method="post">
+        <form action="/echo_user_input" method="post">
             <label for="max_calories">Maximum Calories:</label>
             <input type="number" id="max_calories" name="max_calories" value="0">
             <br>
@@ -23,6 +23,10 @@
                 <option value="">Any</option>
                 <option value="Italian">Italian</option>
                 <option value="Thai">Thai</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Korean">Korean</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Spanish">Spanish</option>
                 <!-- Add more cuisine options here... -->
             </select>
             <br>
@@ -33,6 +37,7 @@
     <div class="container">
         {% if recipes %}
         <div class="recipe-cards">
+            <h2>Average Calories: {{ average_calories }}</h2>
             {% for recipe in recipes %}
             <div class="card">
                 <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
@@ -44,7 +49,10 @@
                     <p>Cheap: {{ recipe.cheap }}</p>
                     {% if recipe.summary %}
                     <div class="container">
-                        {{ recipe.summary }}
+                    {{ recipe.summary }}
+                    </div>
+                    <div>
+                        <p>Calories: {{ recipe.calories }}</p>
                     </div>
                     {% endif %}
                 </div>

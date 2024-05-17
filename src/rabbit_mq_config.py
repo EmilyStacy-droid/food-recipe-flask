@@ -1,5 +1,5 @@
 import json
-from database import recipe_database
+import recipe_database
 
 
 import pika
@@ -21,7 +21,6 @@ class RabbitMQConfig:
         channel = connection.channel()
         channel.queue_declare(queue=self.queue_name)
         message_json = json.dumps(message)
-        print("message_json!!", message_json)
         channel.basic_publish(exchange='', routing_key=self.queue_name, body=message_json)
         connection.close()
 
@@ -32,8 +31,6 @@ class RabbitMQConfig:
         channel.queue_declare(queue=self.queue_name)
     
         def inner_callback(ch, method, properties, body):
-            # print(f"Received search request: {body.decode('utf-8')}")
-            print(f"Received receipt info: {body.decode('utf-8')}")
             recipe_database.save_receipt_info(body.decode('utf-8'))
 
         channel.basic_consume(queue=self.queue_name, on_message_callback=inner_callback, auto_ack=True)

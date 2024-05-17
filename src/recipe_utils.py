@@ -9,11 +9,11 @@ using API
 load_dotenv()
 api_key = os.getenv("API_KEY")
 
-def get_recipe_ids(request=None):
+def get_recipe_ids(request):
     if request:
         cuisine = request["cuisine"]
         max_calories = request["max_calories"]
-        requestUrl = f"https://api.spoonacular.com/recipes/complexSearch??cousine={cuisine}&maxCalories={max_calories}&apiKey={api_key}&number=3"
+        requestUrl = f"https://api.spoonacular.com/recipes/complexSearch?cuisine={cuisine}&maxCalories={max_calories}&apiKey={api_key}&number=3"
     else:
         requestUrl = f"https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&number=1"
     

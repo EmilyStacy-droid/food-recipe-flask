@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import sqlite3
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -33,7 +32,7 @@ def save_receipt_info(recipe_list):
         healthScore=recipe['health_score'],
         cheap=recipe['cheap']
             )
-    db.session.add(new_recipe_info)
+        db.session.add(new_recipe_info)
     db.session.commit()
      
 if __name__ == "__main__":

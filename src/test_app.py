@@ -16,9 +16,9 @@ class TestFlaskApp(unittest.TestCase):
             self.assertEqual(response.json, {"status": "OK"})
 
 
-    @patch('util.recipe_utils.get_recipe_ids')
-    @patch('util.recipe_utils.save_recipe_details')
-    @patch('config.rabbit_mq_config.RabbitMQConfig.send_message_to_queue')
+    @patch('recipe_utils.get_recipe_ids')
+    @patch('recipe_utils.save_recipe_details')
+    @patch('rabbit_mq_config.RabbitMQConfig.send_message_to_queue')
     def test_echo_input(self, mock_send_message, mock_save_recipe_details, mock_get_recipe_ids):
         self.app.post('/echo_user_input')
         mock_get_recipe_ids.assert_called_once_with({"cuisine": '', "max_calories": 100})
