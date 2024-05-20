@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template, jsonify, request
 import re
+import os
 from prometheus_client import Counter
 import rabbit_mq_config
 import recipe_utils
@@ -49,6 +50,7 @@ def extract_calories(recipe_description):
 
 if __name__ == '__main__':
     try:
-        app.run(host='0.0.0.0', debug=True)
+        port = int(os.environ.get("PORT", 5000))
+        app.run(host='0.0.0.0', port=port, debug=True)
     except Exception as e:
         print('Exception happen when app runs',e)
