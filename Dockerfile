@@ -1,6 +1,14 @@
 # Use an official Python runtime as a parent image
 FROM python:3.8-slim-buster
 
+# Install RabbitMQ and SQLite3 packages
+RUN apt-get update && apt-get install -y \
+    rabbitmq-server \
+    sqlite3
+
+# Expose RabbitMQ default port and management UI port
+EXPOSE 5672 15672
+
 # Set the working directory in the container to /app
 WORKDIR /
 
