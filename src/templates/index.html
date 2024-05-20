@@ -14,15 +14,19 @@
     </div>
 
     <div class="container">
-        <form action="/echo_user_input" method="POST" method="post">
-            <label for="min_calories">Minimum Calories:</label>
-            <input type="number" id="min_calories" name="min_calories" value="0">
+        <form action="/echo_user_input" method="post">
+            <label for="max_calories">Maximum Calories:</label>
+            <input type="number" id="max_calories" name="max_calories" value="0">
             <br>
             <label for="cuisine">Cuisine:</label>
             <select id="cuisine" name="cuisine">
                 <option value="">Any</option>
                 <option value="Italian">Italian</option>
                 <option value="Thai">Thai</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Korean">Korean</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Spanish">Spanish</option>
                 <!-- Add more cuisine options here... -->
             </select>
             <br>
@@ -31,23 +35,36 @@
     </div>
 
     <div class="container">
-        {% if data %}
+        {% if recipes %}
+        <div class="recipe-cards">
+            <h2>Average Calories: {{ average_calories }}</h2>
+            {% for recipe in recipes %}
+            <div class="card">
+                <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
+                <div class="card-body">
+                    <h2>{{ recipe.title }}</h2>
+                    <p>Servings: {{ recipe.servings }}</p>
+                    <p>Ready in minutes: {{ recipe.ready_in_min }}</p>
+                    <p>Health score: {{ recipe.health_score }}</p>
+                    <p>Cheap: {{ recipe.cheap }}</p>
+                    {% if recipe.summary %}
+                    <div class="container">
+                    {{ recipe.summary }}
+                    </div>
+                    <div>
+                        <p>Calories: {{ recipe.calories }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
 
-        <p>{{ data }}</p>
+        {% else %}
+        <p>No recipes available, or the daily limit is reached.</p>
 
         {% endif %}
     </div>
-
-</body>
-
-
-<!-- <h2>Filtered Recipes:</h2>
-    <ul>
-        {% for recipe in recipes %}
-        <li>{{ recipe.name }} ({{ recipe.calories }} calories, {{ recipe.cuisine }})</li>
-        {% endfor %}
-    </ul> -->
-
 
 </body>
 
