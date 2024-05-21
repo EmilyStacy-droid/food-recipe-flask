@@ -22,6 +22,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 
 # Run app.py when the container launches
-CMD bash -c "service rabbitmq-server start && sleep 10 && python /src/app.py"
+CMD ["python", "/src/app.py"]
 
 

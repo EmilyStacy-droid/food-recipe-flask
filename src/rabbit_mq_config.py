@@ -1,14 +1,13 @@
 import json
-import os
 import recipe_database
 
 
 import pika
 
 class RabbitMQConfig:
-    def __init__(self, host=None, port=None, queue_name='search_requests'):
-        self.host = host if host else os.environ.get('RABBITMQ_HOST', 'localhost')
-        self.port = port if port else int(os.environ.get('RABBITMQ_PORT', 5672))
+    def __init__(self, host='rabbitmq', port=5672, queue_name='search_requests'):
+        self.host = host
+        self.port = port
         self.queue_name = queue_name
 
     def get_connection(self):
