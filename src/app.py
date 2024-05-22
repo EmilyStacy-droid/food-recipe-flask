@@ -21,11 +21,12 @@ def echo_input():
     print('get request',flush=True)
     max_calories = int(request.form.get('max_calories', 100))
     cuisine = request.form.get('cuisine', '')
-    print('get cuisine from form',  cuisine, flush=True )
+    print('get cuisine from form', cuisine, flush=True)
+    print('max calories', max_calories, flush=True)
     recipe_ids = recipe_utils.get_recipe_ids({"cuisine": cuisine, "max_calories": max_calories})
     print('get recipe id back', flush=True)
     recipe_list = recipe_utils.save_recipe_details(recipe_ids)
-    print('get recipe list back', flush=True)
+    print('get recipe list back',recipe_list, flush=True)
     total_calories = 0
     num_recipes = len(recipe_list)
     
