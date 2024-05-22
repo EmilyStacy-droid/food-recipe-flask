@@ -37,13 +37,12 @@
 
     <div class="container">
         {% if recipes %}
-        {%console.log('there is recipe')%}
-        <div class="recipe-cards">
+        <div>
             <h2>Average Calories: {{ average_calories }}</h2>
             {% for recipe in recipes %}
-            <div class="card">
+            <div>
                 <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
-                <div class="card-body">
+                <div>
                     <h2>{{ recipe.title }}</h2>
                     <p>Servings: {{ recipe.servings }}</p>
                     <p>Ready in minutes: {{ recipe.ready_in_min }}</p>

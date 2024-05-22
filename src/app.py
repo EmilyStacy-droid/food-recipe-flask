@@ -35,7 +35,7 @@ def echo_input():
         total_calories += calories
     
     average_calories = total_calories / num_recipes if num_recipes > 0 else 0
-    rabbit_mq_config.send_message_to_queue(recipe_list)
+    # rabbit_mq_config.send_message_to_queue(recipe_list)
     return render_template('index.html', recipes=recipe_list, average_calories=average_calories)
 
 @app.route("/health", methods=["GET"])
