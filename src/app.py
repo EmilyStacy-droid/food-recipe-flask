@@ -18,11 +18,14 @@ def main():
     
 @app.route("/echo_user_input", methods=["POST"])
 def echo_input():
+    print('get request')
     max_calories = int(request.form.get('max_calories', 100))
     cuisine = request.form.get('cuisine', '')
+    print('get cuisine from form',  cuisine )
     recipe_ids = recipe_utils.get_recipe_ids({"cuisine": cuisine, "max_calories": max_calories})
+    print('get recipe id back')
     recipe_list = recipe_utils.save_recipe_details(recipe_ids)
-
+    print('get recipe list back')
     total_calories = 0
     num_recipes = len(recipe_list)
     
@@ -32,7 +35,6 @@ def echo_input():
         total_calories += calories
     
     average_calories = total_calories / num_recipes if num_recipes > 0 else 0
-    print('calories:', average_calories)
     rabbit_mq_config.send_message_to_queue(recipe_list)
     return render_template('index.html', recipes=recipe_list, average_calories=average_calories)
 
