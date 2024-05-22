@@ -37,6 +37,7 @@
 
     <div class="container">
         {% if recipes %}
+        {%console.log('there is recipe')%}
         <div class="recipe-cards">
             <h2>Average Calories: {{ average_calories }}</h2>
             {% for recipe in recipes %}
