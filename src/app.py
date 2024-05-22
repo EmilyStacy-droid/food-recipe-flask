@@ -10,7 +10,6 @@ app = Flask(__name__, template_folder='templates')
 
 view_metric = Counter('view_total', 'Homepage view', ['page'])
 
-rabbitmq_config = rabbit_mq_config.RabbitMQConfig()
 
 @app.route("/", methods=["GET"])
 def main():
@@ -34,7 +33,7 @@ def echo_input():
     
     average_calories = total_calories / num_recipes if num_recipes > 0 else 0
 
-    rabbitmq_config.send_message_to_queue(recipe_list)
+    rabbit_mq_config.send_message_to_queue(recipe_list)
     return render_template('index.html', recipes=recipe_list, average_calories=average_calories)
 
 @app.route("/health", methods=["GET"])

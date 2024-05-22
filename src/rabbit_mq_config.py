@@ -1,39 +1,47 @@
+import os
+import signal
+import sys
 import json
+import pika
 import recipe_database
 
+# Function to handle termination signals
+def signal_handler(signal, frame):
+    print("Gracefully shutting down...")
+    sys.exit(0)
 
-import pika
+signal.signal(signal.SIGINT, signal_handler)
 
-class RabbitMQConfig:
-    def __init__(self, host='rabbitmq', port=5672, queue_name='search_requests'):
-        self.host = host
-        self.port = port
-        self.queue_name = queue_name
+queue_name = 'search_requests' # Define the queue name
 
-    def get_connection(self):
-        credentials = pika.PlainCredentials('guest', 'guest')
-        parameters = pika.ConnectionParameters(self.host, self.port, '/', credentials)
-        connection = pika.BlockingConnection(parameters)
-        return connection
+def send_message_to_queue(message):
+    # Access the CLOUDAMQP_URL environment variable and parse it (fallback to localhost)
+    url = os.environ.get('CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672/%2f')
+    params = pika.URLParameters(url)
+    connection = pika.BlockingConnection(params)
+    channel = connection.channel() # Start a channel
+    # Declare the queue
+    channel.queue_declare(queue=queue_name)
+    message_json = json.dumps(message)
+    channel.basic_publish(exchange='', routing_key=queue_name, body=message_json)
+    print(f" [x] Sent {message_json}")
 
-    def send_message_to_queue(self, message):
-        connection = self.get_connection()
-        channel = connection.channel()
-        channel.queue_declare(queue=self.queue_name)
-        message_json = json.dumps(message)
-        channel.basic_publish(exchange='', routing_key=self.queue_name, body=message_json)
-        connection.close()
+def consume_messages():
+    url = os.environ.get('CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672/%2f')
+    params = pika.URLParameters(url)
+    connection = pika.BlockingConnection(params)
+    channel = connection.channel()  # Start a channel
+    channel.queue_declare(queue=queue_name)  # Declare the queue
 
+    def callback(ch, method, properties, body):
+        message = body.decode('utf-8')
+        print(f" [x] Received {message}")
+        recipe_database.save_receipt_info(message)
 
-    def consume_messages(self):
-        connection = self.get_connection()
-        channel = connection.channel()
-        channel.queue_declare(queue=self.queue_name)
-    
-        def inner_callback(ch, method, properties, body):
-            recipe_database.save_receipt_info(body.decode('utf-8'))
-
-        channel.basic_consume(queue=self.queue_name, on_message_callback=inner_callback, auto_ack=True)
-        print('Waiting for search requests. To exit, press CTRL+C')
+    channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
+    print(' [*] Waiting for messages:')
+    try:
         channel.start_consuming()
-
+    except KeyboardInterrupt:
+        print("Gracefully shutting down...")
+        connection.close()  # Close the connection to free resources
